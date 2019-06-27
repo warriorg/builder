@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>搬山道人</title>
+</head>
+
+<body>
+    <nav>
+        <span>首页</span>
+        <span>测试</span>
+    </nav>
+    <div>
+        <ul>
+             {% for table in tables %}
+             <li><a href="column/table/{{table.name}}">{{table.name}} {{table.comment}}</a></li>
+             {% endfor %}
+        </ul>
+    </div>
+</body>
+
+</html>
