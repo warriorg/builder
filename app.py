@@ -13,7 +13,7 @@ app = Flask(__name__)
 app.register_blueprint(bp, url_prefix='/api')
 # app.register_blueprint(view_bp, url_prefix='/')
 
-dbContext = Context('oracle', 'jdbc:oracle:thin:@192.168.10.133:1521:JGDBM', 'GWSTD', 'chinaport2018')
+dbContext = Context('oracle', 'jdbc:oracle:thin:@127.0.0.1:1521:JGDBM', 'GWSTD', 'xxxxx')
 
 table = dbContext.userTables()[0]
 
