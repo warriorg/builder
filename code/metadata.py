@@ -24,7 +24,7 @@ java_dict = {
 jdbc_dict = {
     'VARCHAR2': 'VARCHAR',
     'DATETIME': 'DATE',
-    'NUMBER': 'DECIMAL'
+    'NUMBER': 'NUMERIC'
 }
 
 def get_java_type(type, scale = False):

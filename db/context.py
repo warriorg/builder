@@ -14,6 +14,9 @@ class Context:
     def userTables(self):
         return self.db.userTables()
 
+    def table(self, table_name):
+        return self.db.table(table_name)
+
     def columns(self, table_name):
         columns = self.db.columns(table_name)
         return columns

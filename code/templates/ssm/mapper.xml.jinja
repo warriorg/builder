@@ -4,9 +4,9 @@
     <resultMap id="ResultMap" type="{{meta.package}}.model.{{meta.name}}">
         {%- for field in meta.fields %}
         {%- if field.primary %} 
-        <id column="{{field.column}}" jdbcType="{{field.jdbc_type}}" property="{{field.name}}"/>
+        <id column="{{field.column}}" property="{{field.name}}" jdbcType="{{field.jdbc_type}}"/>
         {%- else %}
-        <column column="{{field.column}}" jdbcType="{{field.jdbc_type}}" property="{{field.name}}"/>
+        <result column="{{field.column}}" property="{{field.name}}" jdbcType="{{field.jdbc_type}}"/>
         {%- endif %}
         {%- endfor %}
     </resultMap>

@@ -17,6 +17,7 @@ class DasTable():
                           column['precision'], column['scale'], column['primary'], column['nullable'])
             fields.append(field)
 
+        
         meta.fields = sorted(fields, key=lambda k: (-k.primary, k.name.lower()))
         return meta
 

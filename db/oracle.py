@@ -29,6 +29,14 @@ class DbOracle(Database):
             result.append({'name': table[0], 'comment': table[1]})
         return result
 
+    def table(self, table_name):
+        data = self.execute("""SELECT A.TABLE_NAME, B.COMMENTS FROM USER_TABLES A 
+            LEFT JOIN USER_TAB_COMMENTS B ON A.TABLE_NAME=B.TABLE_NAME 
+            WHERE  A.TABLE_NAME='%s'""" % table_name)
+        if (len(data) > 0):
+            return {'name': data[0][0], 'comment': data[0][1]}
+        return None
+
     def columns(self, table_name):
         data = self.execute("""SELECT A.COLUMN_NAME, A.DATA_TYPE, A.DATA_LENGTH, A.DATA_PRECISION, A.DATA_SCALE, A.NULLABLE, B.COMMENTS 
             FROM USER_TAB_COLUMNS A LEFT JOIN USER_COL_COMMENTS B 
