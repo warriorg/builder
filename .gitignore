@@ -123,7 +123,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-
+.DS_Store
 out/
 .vscode/
 static/code/
