@@ -1,25 +1,23 @@
-import jaydebeapi
+import jaydebeapi, jpype
 
 from .database import Database
 
-dirver = 'oracle.jdbc.OracleDriver'
-jarFile = '/Users/warrior/Code/python/builder/jar/ojdbc6-11.2.0.1.0.jar'
-
-
 class DbOracle(Database):
 
-    def get_jdbc_connection(self):
-        import jpype
-        if jpype.isJVMStarted() and not jpype.isThreadAttachedToJVM():
-            jpype.attachThreadToJVM()
-            jpype.java.lang.Thread.currentThread().setContextClassLoader(jpype.java.lang.ClassLoader.getSystemClassLoader())
-        connection = jaydebeapi.connect(dirver, self.url, {'user': self.user, 'password': self.password, 'tmode': 'TERA', 'charset': 'UTF8'}, jarFile)
-        return connection
-
-    def connect(self, url, user, password):
+    def __init__(self, url, user, password):
         self.url = url
         self.user = user
         self.password = password
+
+    def get_jdbc_connection(self):
+        driver = 'oracle.jdbc.OracleDriver'
+        jarFile = '/Users/warriorg/Code/python/builder/jar/ojdbc6-11.2.0.1.0.jar'
+        if jpype.isJVMStarted() and not jpype.isThreadAttachedToJVM():
+            jpype.attachThreadToJVM()
+            jpype.java.lang.Thread.currentThread().setContextClassLoader(jpype.java.lang.ClassLoader.getSystemClassLoader())
+        print(self.url)
+        connection = jaydebeapi.connect(driver, self.url, {'user': self.user, 'password': self.password, 'tmode': 'TERA', 'charset': 'UTF8'}, jarFile,)
+        return connection
 
     def userTables(self):
         data = self.execute("""SELECT A.TABLE_NAME, B.COMMENTS FROM USER_TABLES A 
@@ -71,5 +69,4 @@ class DbOracle(Database):
         return result
 
     def close(self):
-        if (self.conn != None):
-            self.conn.close()
+        pass

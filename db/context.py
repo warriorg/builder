@@ -5,8 +5,7 @@ from db.oracle import DbOracle
 class Context:
     def __init__(self, dbType, url, user, password):
         if (dbType == 'oracle'):
-            self.db = DbOracle()
-            self.db.connect(url, user, password)
+            self.db = DbOracle(url, user, password)
         if (dbType == 'mysql'):
             return None
         return None

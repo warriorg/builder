@@ -126,3 +126,4 @@ dmypy.json
 
 out/
 .vscode/
+static/code/
