@@ -4,10 +4,11 @@ from .das_table import DasTable
 import zipfile, os
 from .code import Code
 
-
-# 默认的 ssm 项目
-class SSM(Code):
+class SSMP(Code):
+    '''
+    这个项目中使用mybatis plus
+    '''
 
     def tmpl_file(self, fp):
-        return './code/templates/ssm/' + fp + ".jinja"
+        return './code/templates/ssmp/' + fp + ".jinja"
 
