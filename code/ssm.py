@@ -7,7 +7,6 @@ from .code import Code
 
 # 默认的 ssm 项目
 class SSM(Code):
-
-    def tmpl_file(self, fp):
-        return './code/templates/ssm/' + fp + ".jinja"
-
+    
+    def __str__(self):
+        return "其实你懂的这个东西的"

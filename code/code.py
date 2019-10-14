@@ -18,12 +18,22 @@ class Code():
     
 
     def generate(self):
-        self.generate_file(self.tmpl_file('model.java'), self.out(".java"))
-        self.generate_file(self.tmpl_file('dto.java'), self.out("Dto.java"))
-        self.generate_file(self.tmpl_file('param.java'), self.out("Param.java"))
-        self.generate_file(self.tmpl_file('mapper.java'), self.out("Mapper.java"))
-        self.generate_file(self.tmpl_file('mapper.xml'), self.out("Mapper.xml"))
+        tmpl_dict = self.tmpl_file_dict()
+        for key in tmpl_dict:
+            tmpl_meta = tmpl_dict[key]
+            self.generate_file(tmpl_meta["tmpl"], tmpl_meta["name"])
+            
         self.zip()
+
+    def tmpl_file_dict(self, fp):
+        return {
+            "model.java": {'tmpl': "./code/templates/basic/model.java.jinja", 'name': '.java'},
+            "dto.java": {'tmpl': "./code/templates/basic/dto.java.jinja", 'name': 'Dto.java'},
+            "param.java": {'tmpl': "./code/templates/basic/param.java.jinja", 'name': 'Param.java'},
+            "mapper.java": {'tmpl': "./code/templates/basic/mapper.java.jinja", 'name': 'Mapper.java'},
+            "mapper.xml": {'tmpl': "./code/templates/basic/mapper.xml.jinja", 'name': 'Mapper.xml'}, 
+        }
+    
 
     def generate_file(self, tmplFile, outFile):
         with open(tmplFile) as ft:

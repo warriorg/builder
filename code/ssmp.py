@@ -9,6 +9,5 @@ class SSMP(Code):
     这个项目中使用mybatis plus
     '''
 
-    def tmpl_file(self, fp):
-        return './code/templates/ssmp/' + fp + ".jinja"
-
+    def __str__(self):
+       return "其实你懂的这个东西的"
