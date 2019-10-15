@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.warriorg.test.dao.PredeccontainervoMapper">
+    <resultMap id="ResultMap" type="com.warriorg.test.model.Predeccontainervo">
+        <result column="ADDLIST" property="addlist" jdbcType="VARCHAR"/>
+        <result column="CNTNRMODECODE" property="cntnrmodecode" jdbcType="VARCHAR"/>
+        <result column="CNTNRMODECODENAME" property="cntnrmodecodename" jdbcType="VARCHAR"/>
+        <result column="CONTAINERMDCODE" property="containermdcode" jdbcType="VARCHAR"/>
+        <result column="CONTAINERMDCODENAME" property="containermdcodename" jdbcType="VARCHAR"/>
+        <result column="CONTAINERNO" property="containerno" jdbcType="VARCHAR"/>
+        <result column="CONTAINERWT" property="containerwt" jdbcType="VARCHAR"/>
+        <result column="CONTSEQNO" property="contseqno" jdbcType="VARCHAR"/>
+        <result column="CUS_CIQ_NO" property="cusCiqNo" jdbcType="VARCHAR"/>
+        <result column="DATA_SOURCE" property="dataSource" jdbcType="VARCHAR"/>
+        <result column="GOODSCONTAWT" property="goodscontawt" jdbcType="VARCHAR"/>
+        <result column="GOODSNO" property="goodsno" jdbcType="VARCHAR"/>
+        <result column="INSERT_TIME" property="insertTime" jdbcType="DATE"/>
+        <result column="INSERT_USER" property="insertUser" jdbcType="VARCHAR"/>
+        <result column="LCLFLAG" property="lclflag" jdbcType="VARCHAR"/>
+        <result column="LCLFLAGNAME" property="lclflagname" jdbcType="VARCHAR"/>
+        <result column="SEQ_NO" property="seqNo" jdbcType="VARCHAR"/>
+        <result column="SID" property="sid" jdbcType="VARCHAR"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE"/>
+        <result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="ColumnList">
+        ADDLIST, CNTNRMODECODE, CNTNRMODECODENAME, CONTAINERMDCODE, CONTAINERMDCODENAME, CONTAINERNO, 
+		CONTAINERWT, CONTSEQNO, CUS_CIQ_NO, DATA_SOURCE, GOODSCONTAWT, GOODSNO, 
+		INSERT_TIME, INSERT_USER, LCLFLAG, LCLFLAGNAME, SEQ_NO, SID, 
+		UPDATE_TIME, UPDATE_USER 
+    </sql>
+    <select id="getList" parameterType="map" resultMap="ResultMap">
+        SELECT 
+        <include refid="ColumnList"/>
+        FROM PREDECCONTAINERVO
+        <where>
+        </where>
+    </select>
+    <insert id="insertBatch" parameterType="java.util.List">
+        INSERT ALL
+        <foreach collection="list" item="item">
+            INTO PREDECCONTAINERVO
+            (<include refid="ColumnList"></include>)
+            VALUES
+            (#{item.addlist}, #{item.cntnrmodecode}, #{item.cntnrmodecodename}, #{item.containermdcode}, #{item.containermdcodename}, #{item.containerno}, 
+			#{item.containerwt}, #{item.contseqno}, #{item.cusCiqNo}, #{item.dataSource}, #{item.goodscontawt}, #{item.goodsno}, 
+			#{item.insertTime}, #{item.insertUser}, #{item.lclflag}, #{item.lclflagname}, #{item.seqNo}, #{item.sid}, 
+			#{item.updateTime}, #{item.updateUser})
+        </foreach>
+        SELECT * FROM dual
+    </insert>
+</mapper>

@@ -12,10 +12,16 @@
     </resultMap>
     <sql id="ColumnList">
         {% for field in meta.fields -%}
-        {{field.column}}{% if not loop.last %}, {% endif %}
-        {%- if loop.index % 6 == 0 %}{{"\n\t\t"|e}}{%- endif %}
+        {{field.column}}{% if not loop.last %},{{"\n\t\t"|e}}{% endif %}
         {%- endfor %} 
     </sql>
+    <sql id="condition">
+        {% for field in meta.fields -%}
+        <if test="{{field.name}} != null and {{field.name}} != ''">
+            and {{field.column}} = #{{"{"}}{{field.name}},jdbcType={{field.jdbc_type}}{{"}"}}
+        </if>
+        {%- endfor %} 
+    </sql>  
     <select id="getList" parameterType="map" resultMap="ResultMap">
         SELECT 
         <include refid="ColumnList"/>

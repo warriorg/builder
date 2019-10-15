@@ -21,11 +21,10 @@ class Code():
         tmpl_dict = self.tmpl_file_dict()
         for key in tmpl_dict:
             tmpl_meta = tmpl_dict[key]
-            self.generate_file(tmpl_meta["tmpl"], tmpl_meta["name"])
+            self.generate_file(tmpl_meta["tmpl"], self.out(tmpl_meta["name"]))
             
-        self.zip()
 
-    def tmpl_file_dict(self, fp):
+    def tmpl_file_dict(self):
         return {
             "model.java": {'tmpl': "./code/templates/basic/model.java.jinja", 'name': '.java'},
             "dto.java": {'tmpl': "./code/templates/basic/dto.java.jinja", 'name': 'Dto.java'},
@@ -46,11 +45,6 @@ class Code():
 
     def out(self, fp):
         return self.out_path + self.meta.name + fp
-
-    def zip(self):
-        zipf = zipfile.ZipFile('./static/code/%s.zip' % self.meta.name, 'w', zipfile.ZIP_DEFLATED)
-        self.zip_dir(self.out_path, zipf)
-        zipf.close()
 
 
     def zip_dir(self, path, ziph):

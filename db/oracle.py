@@ -11,11 +11,11 @@ class DbOracle(Database):
 
     def get_jdbc_connection(self):
         driver = 'oracle.jdbc.OracleDriver'
-        jarFile = '/Users/warriorg/Code/python/builder/jar/ojdbc6-11.2.0.1.0.jar'
+        jarFile = '/Users/warrior/Code/python/builder/jar/ojdbc7-12.1.0.2.jar'
         if jpype.isJVMStarted() and not jpype.isThreadAttachedToJVM():
             jpype.attachThreadToJVM()
             jpype.java.lang.Thread.currentThread().setContextClassLoader(jpype.java.lang.ClassLoader.getSystemClassLoader())
-        print(self.url)
+            # jpype.startJVM(jpype.getDefaultJVMPath(), '-ea', '-Djava.class.path='+jarFile) 
         connection = jaydebeapi.connect(driver, self.url, {'user': self.user, 'password': self.password, 'tmode': 'TERA', 'charset': 'UTF8'}, jarFile,)
         return connection
 
@@ -29,8 +29,7 @@ class DbOracle(Database):
 
     def table(self, table_name):
         data = self.execute("""SELECT A.TABLE_NAME, B.COMMENTS FROM USER_TABLES A 
-            LEFT JOIN USER_TAB_COMMENTS B ON A.TABLE_NAME=B.TABLE_NAME 
-            WHERE  A.TABLE_NAME='%s'""" % table_name)
+            LEFT JOIN USER_TAB_COMMENTS B ON A.TABLE_NAME=B.TABLE_NAME WHERE A.TABLE_NAME='%s'""" % table_name)
         if (len(data) > 0):
             return {'name': data[0][0], 'comment': data[0][1]}
         return None
