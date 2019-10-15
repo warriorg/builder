@@ -73,8 +73,14 @@ class Field:
     scale = None
     primary = False
     nullable = False
+    strictMode = False
 
-    def __init__(self, column, comment, type, length, precision, scale, primary, nullable):
+    def __init__(self, column, comment, type, length, precision, scale, primary, nullable, strictMode = False):
+        """
+        args: 
+            strictMode: javaBean遵守严格模式 I_E_MODEL => IEModel 
+        """
+        self.strictMode = strictMode
         self.column = column
         self.name = self.get_bean_name(column) 
         self.comment = comment
@@ -90,7 +96,7 @@ class Field:
         self.nullable = nullable == 'Y'
 
     def get_bean_name(self, columnName):
-        return underline_to_java_bean(columnName)
+        return underline_to_java_bean(columnName, self.strictMode)
 
     def __str__(self):
        self.__dict__

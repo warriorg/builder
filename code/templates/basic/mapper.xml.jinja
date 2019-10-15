@@ -19,7 +19,7 @@
         {% for field in meta.fields -%}
         <if test="{{field.name}} != null and {{field.name}} != ''">
             and {{field.column}} = #{{"{"}}{{field.name}},jdbcType={{field.jdbc_type}}{{"}"}}
-        </if>
+        </if>{{"\n\t\t"|e}}
         {%- endfor %} 
     </sql>  
     <select id="getList" parameterType="map" resultMap="ResultMap">
