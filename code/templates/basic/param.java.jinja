@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.io.Serializable;
+
 /**
  * {{meta.comment}}
  * 
@@ -27,7 +29,7 @@ public class {{meta.name}}Param implements Serializable {
     {%- if field.java_type == 'String' %}
     @XdoSize(max = {{field.length}}, message = "{{field.comment}}长度不能超过{{field.length}}位字节长度(一个汉字2位字节长度)!")
     {%- if field.nullable == False %}
-    @NotEmpty(value = "{{field.comment}}不能为空！")
+    @NotEmpty(message = "{{field.comment}}不能为空！")
     {%- endif %}
     {%- elif field.java_type == 'BigDecimal' or field.java_type == 'Double' or field.java_type == 'Float' 
     or field.java_type == 'Long' or field.java_type == 'Integer' %}

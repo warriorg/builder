@@ -1,7 +1,7 @@
 
 from jinja2 import Template
 from .das_table import DasTable
-import zipfile, os
+import zipfile, os, errno
 
 
 class Code():
@@ -21,16 +21,16 @@ class Code():
         tmpl_dict = self.tmpl_file_dict()
         for key in tmpl_dict:
             tmpl_meta = tmpl_dict[key]
-            self.generate_file(tmpl_meta["tmpl"], self.out(tmpl_meta["name"]))
+            self.generate_file(tmpl_meta["tmpl"], self.out(tmpl_meta))
             
 
     def tmpl_file_dict(self):
         return {
-            "model.java": {'tmpl': "./code/templates/basic/model.java.jinja", 'name': '.java'},
-            "dto.java": {'tmpl': "./code/templates/basic/dto.java.jinja", 'name': 'Dto.java'},
-            "param.java": {'tmpl': "./code/templates/basic/param.java.jinja", 'name': 'Param.java'},
-            "mapper.java": {'tmpl': "./code/templates/basic/mapper.java.jinja", 'name': 'Mapper.java'},
-            "mapper.xml": {'tmpl': "./code/templates/basic/mapper.xml.jinja", 'name': 'Mapper.xml'}, 
+            "model.java": {'tmpl': "./code/templates/basic/model.java.jinja", 'name': '.java', 'package': 'model'},
+            "dto.java": {'tmpl': "./code/templates/basic/dto.java.jinja", 'name': 'Dto.java', 'package': 'dto'},
+            "param.java": {'tmpl': "./code/templates/basic/param.java.jinja", 'name': 'Param.java', 'package': 'dto'},
+            "mapper.java": {'tmpl': "./code/templates/basic/mapper.java.jinja", 'name': 'Mapper.java', 'package': 'dao'},
+            "mapper.xml": {'tmpl': "./code/templates/basic/mapper.xml.jinja", 'name': 'Mapper.xml', 'package': 'dao'}, 
         }
     
 
@@ -39,12 +39,24 @@ class Code():
             template = Template(ft.read())
         code = template.render(meta=self.meta)
 
+        if not os.path.exists(os.path.dirname(outFile)):
+            try:
+                os.makedirs(os.path.dirname(outFile))
+            except OSError as exc: 
+                if exc.errno != errno.EEXIST:
+                    raise
+
         with open(outFile, "w") as f:
             f.write(code)
         
 
-    def out(self, fp):
-        return self.out_path + self.meta.name + fp
+    def out(self, tmpl_meta):
+        out_file = self.out_path
+        if 'package' in tmpl_meta:
+           out_file += tmpl_meta['package'] + '/'
+
+        out_file += self.meta.name + tmpl_meta['name']
+        return out_file
 
 
     def zip_dir(self, path, ziph):

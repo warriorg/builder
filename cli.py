@@ -1,11 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/env python
 
 import sys
 
 from db.context import Context
-from code.ssmp import SSMP
+from code.ssm import SSM
 
-dbContext = Context('oracle', 'jdbc:oracle:thin:@192.168.10.128:1521:orcl', 'ENTRY_CENTER_DATA', 'dcjet')
+dbContext = Context('oracle', 'jdbc:oracle:thin:@192.168.10.133:1521:JGDBM', 'GWSTD', 'chinaport2018')
 
 if __name__ == "__main__":
     args = sys.argv[1:]
@@ -18,5 +18,5 @@ if __name__ == "__main__":
     table = dbContext.table(table_name)
     columns = dbContext.columns(table_name)
     
-    ssm = SSMP(table, columns, "com.warriorg.test")
+    ssm = SSM(table, columns, "com.dcjet.cs.mrp")
     ssm.generate()

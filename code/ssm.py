@@ -16,7 +16,7 @@ class SSM(Code):
         zipf = zipfile.ZipFile('./static/code/%s.zip' % self.meta.name, 'w', zipfile.ZIP_DEFLATED)
         self.zip_dir(self.out_path, zipf)
         zipf.close()
-
+    
     
     def __str__(self):
         return "其实你懂的这个东西的"

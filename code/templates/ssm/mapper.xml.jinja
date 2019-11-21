@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="{{meta.package}}.dao.{{meta.name}}Mapper">
+    <resultMap id="ResultMap" type="{{meta.package}}.model.{{meta.name}}">
+        {%- for field in meta.fields %}
+        {%- if field.primary %} 
+        <id column="{{field.column}}" property="{{field.name}}" jdbcType="{{field.jdbc_type}}"/>
+        {%- else %}
+        <result column="{{field.column}}" property="{{field.name}}" jdbcType="{{field.jdbc_type}}"/>
+        {%- endif %}
+        {%- endfor %}
+    </resultMap>
+    <sql id="ColumnList">
+        {% for field in meta.fields -%}
+        t.{{field.column}}{% if not loop.last %},{{"\n\t\t"|e}}{% endif %}
+        {%- endfor %} 
+    </sql>
+    <sql id="condition">
+        {% for field in meta.fields -%}
+        <if test="{{field.name}} != null and {{field.name}} != ''">
+            and t.{{field.column}} = #{{"{"}}{{field.name}},jdbcType={{field.jdbc_type}}{{"}"}}
+        </if>{{"\n\t\t"|e}}
+        {%- endfor %} 
+    </sql>  
+    <select id="getList" parameterType="map" resultMap="ResultMap">
+        SELECT 
+        <include refid="ColumnList"/>
+        FROM {{meta.table}} t
+        <where>
+            <include refid="condition"></include>
+        </where>
+    </select>
+    <insert id="insertBatch" parameterType="java.util.List">
+        INSERT ALL
+        <foreach collection="list" item="item">
+            INTO {{meta.table}}
+            (<include refid="ColumnList"></include>)
+            VALUES
+            ({%- for field in meta.fields -%}
+            #{item.{{ field.name }}}{% if not loop.last %}, {% endif %}
+            {%- if loop.index % 6 == 0 %}{{"\n\t\t\t"|e}}{%- endif %}
+            {%- endfor %})
+        </foreach>
+        SELECT * FROM dual
+    </insert>
+
+    <delete id="deleteBySids" parameterType="java.util.List">
+        <foreach collection="list"  item="item" >
+            delete from  {{meta.table}} t  where t.SID =  #{item}
+        </foreach>
+    </delete>
+</mapper>

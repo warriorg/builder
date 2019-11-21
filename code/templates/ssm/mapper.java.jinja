@@ -1,0 +1,33 @@
+package {{meta.package}}.dao;
+
+import java.util.List;
+import tk.mybatis.mapper.common.Mapper;
+import {{meta.package}}.model.{{meta.name}};
+
+/***
+ * 
+ */
+public interface {{meta.name}}Mapper extends Mapper<{{meta.name}}> {
+
+     /**
+     * 查询获取数据
+     * @param param
+     * @return
+     */
+    List<{{meta.name}}> getList({{meta.name}} param);
+
+     /***
+     * 批量新增
+     *
+     * @param list
+     */
+    int insertBatch(List<{{meta.name}}> list);
+
+     /***
+     * 批量删除
+     * @param ids
+     * @return
+     */
+    int deleteBySids(List<String> ids);
+
+} 
