@@ -11,6 +11,12 @@ class SSM(Code):
     def generate(self):
         super().generate()
         self.zip()
+
+    def tmpl_file_dict(self):
+        dict = super().tmpl_file_dict()
+        dict["mapper.java"] = {'tmpl': "./code/templates/ssm/mapper.java.jinja", 'name': 'Mapper.java', 'package': 'dao'}
+        dict["mapper.xml"] = {'tmpl': "./code/templates/ssm/mapper.xml.jinja", 'name': 'Mapper.xml', 'package': 'dao'}
+        return dict
         
     def zip(self):
         zipf = zipfile.ZipFile('./static/code/%s.zip' % self.meta.name, 'w', zipfile.ZIP_DEFLATED)

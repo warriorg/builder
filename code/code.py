@@ -23,8 +23,10 @@ class Code():
             tmpl_meta = tmpl_dict[key]
             self.generate_file(tmpl_meta["tmpl"], self.out(tmpl_meta))
             
-
     def tmpl_file_dict(self):
+        '''
+        提供动态检查文件是否许哟啊覆盖
+        '''
         return {
             "model.java": {'tmpl': "./code/templates/basic/model.java.jinja", 'name': '.java', 'package': 'model'},
             "dto.java": {'tmpl': "./code/templates/basic/dto.java.jinja", 'name': 'Dto.java', 'package': 'dto'},
