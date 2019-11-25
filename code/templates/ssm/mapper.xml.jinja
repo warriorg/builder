@@ -45,8 +45,11 @@
     </insert>
 
     <delete id="deleteBySids" parameterType="java.util.List">
-        <foreach collection="list"  item="item" >
-            delete from  {{meta.table}} t  where t.SID =  #{item}
-        </foreach>
+        delete from {{meta.table}}
+        <where>
+            <foreach collection="list" item="item" open="(" separator="or" close=")">
+                sid=#{item}
+            </foreach>
+        </where>
     </delete>
 </mapper>
