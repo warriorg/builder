@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="{{meta.package}}.dao.{{meta.name}}Mapper">
-    <resultMap id="ResultMap" type="{{meta.package}}.model.{{meta.name}}">
+    <resultMap id="resultMap" type="{{meta.package}}.model.{{meta.name}}">
         {%- for field in meta.fields %}
         {%- if field.primary %} 
         <id column="{{field.column}}" property="{{field.name}}" jdbcType="{{field.jdbc_type}}"/>
@@ -10,7 +10,7 @@
         {%- endif %}
         {%- endfor %}
     </resultMap>
-    <sql id="ColumnList">
+    <sql id="columns">
         {% for field in meta.fields -%}
         t.{{field.column}}{% if not loop.last %},{{"\n\t\t"|e}}{% endif %}
         {%- endfor %} 
@@ -22,29 +22,34 @@
         </if>{{"\n\t\t"|e}}
         {%- endfor %} 
     </sql>  
-    <select id="getList" parameterType="map" resultMap="ResultMap">
+    <select id="getList" parameterType="map" resultMap="resultMap">
         SELECT 
-        <include refid="ColumnList"/>
+        <include refid="columns"/>
         FROM {{meta.table}} t
         <where>
             <include refid="condition"></include>
         </where>
     </select>
-    <insert id="insertBatch" parameterType="java.util.List">
-        INSERT ALL
-        <foreach collection="list" item="item">
-            INTO {{meta.table}}
-            (<include refid="ColumnList"></include>)
-            VALUES
-            ({%- for field in meta.fields -%}
+    <insert id="insertBatch" parameterType="java.lang.Integer">
+        INSERT INTO {{meta.table}}
+        (
+            <include refid="columns"></include>
+        )
+        SELECT t.* FROM (
+        <foreach item="item" index="index" collection="list" separator="union all">
+        (
+            SELECT 
+            {%- for field in meta.fields -%}
             #{item.{{ field.name }}}{% if not loop.last %}, {% endif %}
             {%- if loop.index % 6 == 0 %}{{"\n\t\t\t"|e}}{%- endif %}
-            {%- endfor %})
+            {%- endfor %}
+            FROM DUAL
+        )
         </foreach>
-        SELECT * FROM dual
+        ) t
     </insert>
 
-    <delete id="deleteBySids" parameterType="java.util.List">
+    <delete id="deleteBySids" parameterType="java.lang.Integer">
         delete from {{meta.table}}
         <where>
             <foreach collection="list" item="item" open="(" separator="or" close=")">
