@@ -18,12 +18,12 @@ java_dict = {
     'datetime': 'Date',
     'date': 'Date',
     'time': 'Date',
-    'timestamp': 'Timestamp'
+    'timestamp': 'Date'
 }
 
 jdbc_dict = {
     'VARCHAR2': 'VARCHAR',
-    'DATETIME': 'DATE',
+    'DATETIME': 'TIMESTAMP',
     'NUMBER': 'NUMERIC'
 }
 

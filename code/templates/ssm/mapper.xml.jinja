@@ -30,18 +30,19 @@
             <include refid="condition"></include>
         </where>
     </select>
-    <insert id="insertBatch" parameterType="java.lang.Integer">
+    <insert id="insertBatch" parameterType="java.util.List">
         INSERT INTO {{meta.table}}
         (
-            <include refid="columns"></include>
+            {% for field in meta.fields -%}
+            {{field.column}}{% if not loop.last %},{{"\n\t\t\t"|e}}{% endif %}
+            {%- endfor %}  
         )
         SELECT t.* FROM (
         <foreach item="item" index="index" collection="list" separator="union all">
         (
-            SELECT 
+            SELECT{{"\n\t\t\t"|e}}
             {%- for field in meta.fields -%}
-            #{item.{{ field.name }}}{% if not loop.last %}, {% endif %}
-            {%- if loop.index % 6 == 0 %}{{"\n\t\t\t"|e}}{%- endif %}
+            #{item.{{ field.name }},jdbcType={{field.jdbc_type}}}{% if not loop.last %},{{"\n\t\t\t"|e}}{% endif %}
             {%- endfor %}
             FROM DUAL
         )
@@ -49,7 +50,7 @@
         ) t
     </insert>
 
-    <delete id="deleteBySids" parameterType="java.lang.Integer">
+    <delete id="deleteBySids"  parameterType="java.util.List">
         delete from {{meta.table}}
         <where>
             <foreach collection="list" item="item" open="(" separator="or" close=")">
