@@ -11,10 +11,12 @@ class Code():
 
     out_path ="out/"
 
-    def __init__(self, table, columns, package="com.dc"):
+    def __init__(self, table, columns, module, package="com.dc"):
         self.das_table = DasTable(table, columns)
         self.meta = self.das_table.get_class_metadata()
+        self.meta.module = module
         self.meta.package = package
+       
     
 
     def generate(self):

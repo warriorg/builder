@@ -14,8 +14,18 @@ class SSM(Code):
 
     def tmpl_file_dict(self):
         dict = super().tmpl_file_dict()
+        dict["model.java"] = {'tmpl': "./code/templates/ssm/model.java.jinja", 'name': '.java', 'package': 'model'}
+        dict["dto.java"] = {'tmpl': "./code/templates/ssm/dto.java.jinja", 'name': 'Dto.java', 'package': 'dto'}
+        dict["param.java"] = {'tmpl': "./code/templates/ssm/param.java.jinja", 'name': 'Param.java', 'package': 'dto'}
         dict["mapper.java"] = {'tmpl': "./code/templates/ssm/mapper.java.jinja", 'name': 'Mapper.java', 'package': 'dao'}
         dict["mapper.xml"] = {'tmpl': "./code/templates/ssm/mapper.xml.jinja", 'name': 'Mapper.xml', 'package': 'dao'}
+        dict["mapper.java"] = {'tmpl': "./code/templates/ssm/mapper.java.jinja", 'name': 'Mapper.java', 'package': 'dao'}
+        dict["mapper.xml"] = {'tmpl': "./code/templates/ssm/mapper.xml.jinja", 'name': 'Mapper.xml', 'package': 'dao'}
+        dict["dtoMpper.java"] = {'tmpl': "./code/templates/ssm/dtoMapper.java.jinja", 'name': 'DtoMapper.java', 'package': 'mapper'}
+        dict["service.java"] = {'tmpl': "./code/templates/ssm/service.java.jinja", 'name': 'Service.java', 'package': 'service'}
+        dict["serviceImpl.java"] = {'tmpl': "./code/templates/ssm/serviceImpl.java.jinja", 'name': 'ServiceImpl.java', 'package': 'service.impl'}
+        dict["controller.java"] = {'tmpl': "./code/templates/ssm/controller.java.jinja", 'name': 'Controller.java', 'package': 'api'}
+        
         return dict
         
     def zip(self):
