@@ -16,6 +16,10 @@ if __name__ == "__main__":
     table_name = args[0].upper()
     
     table = dbContext.table(table_name)
+    if table == None:
+        print("数据库里面有这张表吗？")
+        exit(0)
+
     columns = dbContext.columns(table_name)
 
     module = args[1].lower()

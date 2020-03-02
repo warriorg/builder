@@ -4,6 +4,8 @@ from .metadata import ClassMeta, Field
 
 class DasTable():
     def __init__(self, table, columns):
+        if table == None:
+            raise RuntimeError('表不能为空')
         self.table = table 
         self.columns = columns
         self.convertField()
