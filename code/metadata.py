@@ -27,13 +27,28 @@ jdbc_dict = {
     'NUMBER': 'NUMERIC'
 }
 
-def get_java_type(type, scale = False):
+field_filter = [
+    'SID',
+    'TRADE_CODE',
+    'INSERT_TIME',
+    'INSERT_USER',
+    'INSERT_USER_NAME',
+    'UPDATE_TIME',
+    'UPDATE_USER',
+    'UPDATE_USER_NAME'
+]
+
+def get_java_type(type, precision, scale):
     key = type.lower()
     java_type = 'String'
     if key in java_dict:
         java_type = java_dict[key]
-    if scale and java_type == 'BigDecimal':
-        java_type = 'Long'
+
+    if java_type == 'BigDecimal':
+        if not scale or scale == 0:
+            java_type = 'Integer'
+        if precision > 10:
+           java_type = 'Long' 
     return java_type
 
 def get_jdbc_type(type):
@@ -80,18 +95,21 @@ class Field:
         args: 
             strictMode: javaBean遵守严格模式 I_E_MODEL => IEModel 
         """
-        self.strictMode = strictMode
-        self.column = column
-        self.name = self.get_bean_name(column) 
-        self.comment = comment
-        self.java_type = get_java_type(type, scale == 0)
-        self.jdbc_type = get_jdbc_type(type)
-        self.column_type = type
-        self.length = int(length) 
         if precision:
             self.precision = int(precision)
         if scale:
             self.scale = int(scale) 
+        self.strictMode = strictMode
+        self.column = column
+        self.filter = column in field_filter
+        self.name = self.get_bean_name(column) 
+        self.comment = comment
+        self.column_type = type
+        self.java_type = get_java_type(type, self.precision, self.scale)
+        self.jdbc_type = get_jdbc_type(type)
+        
+        self.length = int(length) 
+       
         self.primary = primary
         self.nullable = nullable == 'Y'
 

@@ -5,7 +5,7 @@ import sys
 from db.context import Context
 from code.ssm import SSM
 
-dbContext = Context('oracle', 'jdbc:oracle:thin:@192.168.10.133:1521:JGDBM', 'GWSTD', 'chinaport2018')
+dbContext = Context('oracle', 'jdbc:oracle:thin:@192.168.10.133:1521:JGDBM', 'GWSTD_SDC', 'chinaport2018')
 
 if __name__ == "__main__":
     args = sys.argv[1:]

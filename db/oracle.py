@@ -11,7 +11,7 @@ class DbOracle(Database):
 
     def get_jdbc_connection(self):
         driver = 'oracle.jdbc.OracleDriver'
-        jarFile = '/Users/warrior/Code/python/builder/jar/ojdbc7-12.1.0.2.jar'
+        jarFile = '/Users/warriorg/Code/python/builder/jar/ojdbc7-12.1.0.2.jar'
         if jpype.isJVMStarted() and not jpype.isThreadAttachedToJVM():
             jpype.attachThreadToJVM()
             jpype.java.lang.Thread.currentThread().setContextClassLoader(jpype.java.lang.ClassLoader.getSystemClassLoader())
@@ -27,7 +27,7 @@ class DbOracle(Database):
             result.append({'name': table[0], 'comment': table[1]})
         return result
 
-    def table(self, table_name):
+    def getTableByName(self, table_name):
         data = self.execute("""SELECT A.TABLE_NAME, B.COMMENTS FROM USER_TABLES A 
             LEFT JOIN USER_TAB_COMMENTS B ON A.TABLE_NAME=B.TABLE_NAME WHERE A.TABLE_NAME='%s'""" % table_name)
         if (len(data) > 0):

@@ -127,3 +127,6 @@ dmypy.json
 out/
 .vscode/
 static/code/
+*.xlsx
+tags
+.java-version

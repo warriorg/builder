@@ -20,7 +20,7 @@ import java.io.Serializable;
 public class {{meta.name}}Param extends BasicParam implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    {% for field in meta.fields %}
+    {% for field in meta.fields if not field.filter %}
     /**
      * {%- if field.comment is not none %}{{field.comment}}{%- endif %}
      */
@@ -33,8 +33,7 @@ public class {{meta.name}}Param extends BasicParam implements Serializable {
     {%- if field.nullable == False %}
     @NotEmpty(message = "{{field.comment}}不能为空！")
     {%- endif %}
-    {%- elif field.java_type == 'BigDecimal' or field.java_type == 'Double' or field.java_type == 'Float' 
-    or field.java_type == 'Long' or field.java_type == 'Integer' %}
+    {%- elif field.java_type == 'BigDecimal' or field.java_type == 'Double' or field.java_type == 'Float' %}
     @Digits(integer = {{field.precision}}, fraction = {{field.scale}}, message = "{{field.comment}}必须为数字,整数位最大{{field.precision}}位,小数最大{{field.scale}}位!")
     {%- endif %} 
     private {{field.java_type}} {{field.name}};

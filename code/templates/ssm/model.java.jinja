@@ -25,7 +25,7 @@ import java.io.Serializable;
 public class {{meta.name}} extends BasicModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    {% for field in meta.fields %}
+    {% for field in meta.fields if not field.filter %}
     /**
      * {{field.comment}}
      */
