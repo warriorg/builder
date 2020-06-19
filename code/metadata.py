@@ -47,8 +47,8 @@ def get_java_type(type, precision, scale):
     if java_type == 'BigDecimal':
         if not scale or scale == 0:
             java_type = 'Integer'
-        if precision > 10:
-           java_type = 'Long' 
+            if precision > 10:
+                java_type = 'Long' 
     return java_type
 
 def get_jdbc_type(type):

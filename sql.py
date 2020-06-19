@@ -11,7 +11,9 @@ def read_excel(excel_name):
     #获取所有表格（worksheet）的名字
     sheets = wb.sheetnames
     
-    os.remove(excel_name + '.sql')
+
+    if os.path.exists(excel_name + '.sql'):
+        os.remove(excel_name + '.sql')
 
     #遍历每一个sheet，并且拿到worksheet对象
     for i in range(len(sheets)):
@@ -43,8 +45,8 @@ def read_excel(excel_name):
                     table_sql += ','
                 else:
                     table_sql += '(' + str(sheet.cell(row=rowNum, column=4).value) + '),'
-            if (sheet.cell(row=rowNum, column=1).value != None):
-                common_sql += "'" + sheet.cell(row=rowNum, column=1).value + "';" 
+            if (sheet.cell(row=rowNum, column=7).value != None):
+                common_sql += "'" + sheet.cell(row=rowNum, column=7).value + "';" 
             
         table_sql += '\n\tPRIMARY KEY ("SID")\n);'
         common_sql += '\nCOMMENT ON TABLE "' + table_name + '" IS \'' + table_name_comment + '\';\n\n'
